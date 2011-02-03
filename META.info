@@ -2,7 +2,7 @@
     "name"        : "Math::FatRat",
     "version"     : "*",
     "description" : "Arbitrary precision Rat class",
-    "depends"     : [Math::BigInt],
+    "depends"     : ["Math::BigInt"],
     "repo-type"   : "git",
     "repo-url"    : "git://github.com/colomon/Math-FatRat.git"
 }
