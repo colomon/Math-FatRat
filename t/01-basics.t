@@ -53,6 +53,10 @@ plan *;
     is ~$b.nude, ~<59 2>, "and the original is unchanged";
 }
 
-
+{
+    my $a = Math::FatRat.new(6L,9L);
+    isa_ok $a, Math::FatRat, "Two BigInt .new yields a FatRat";
+    is ~$a.nude, ~<2 3>, "and fraction is properly reduced";
+}
 
 done;

@@ -13,9 +13,9 @@ class Math::FatRat does Real {
                       :denominator(Math::BigInt.new($r.denominator)));
     }
 
-    multi method new(Math::BigInt $numerator is copy, Math::BigInt $denominator is copy) {
-        # MUST: add GCD calculation here!!!!
-        self.bless(*, :numerator($numerator), :denominator($denominator));
+    multi method new(Math::BigInt $numerator, Math::BigInt $denominator) {
+        my $gcd = gcd($numerator, $denominator);
+        self.bless(*, :numerator($numerator div $gcd), :denominator($denominator div $gcd));
     }
     
     # multi method new(Int $numerator is copy, Int $denominator is copy) {
@@ -53,6 +53,12 @@ class Math::FatRat does Real {
 
     method pred {
         Math::FatRat.new($!numerator - $!denominator, $!denominator);
+    }
+    
+    multi sub infix:<FR+>(Math::FatRat $a, Math::FatRat $b) is export(:DEFAULT) {
+        my $gcd = gcd($a.denominator, $b.denominator);
+        Math::FatRat.new($a.numerator * ($b.denominator div $gcd) + $b.numerator * ($a.denominator div $gcd),
+                         ($a.denominator div $gcd) * $b.denominator);
     }
 }
 
