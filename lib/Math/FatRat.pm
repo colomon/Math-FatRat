@@ -8,6 +8,16 @@ class Math::FatRat does Real {
         self.bless(*, :numerator(0L), :denominator(1L));
     }
 
+    multi method new(Rat $r) {
+        self.bless(*, :numerator(Math::BigInt.new($r.numerator)), 
+                      :denominator(Math::BigInt.new($r.denominator)));
+    }
+
+    multi method new(Math::BigInt $numerator is copy, Math::BigInt $denominator is copy) {
+        # MUST: add GCD calculation here!!!!
+        self.bless(*, :numerator($numerator), :denominator($denominator));
+    }
+    
     # multi method new(Int $numerator is copy, Int $denominator is copy) {
     #     if $denominator < 0 {
     #         $numerator = -$numerator;
@@ -21,7 +31,7 @@ class Math::FatRat does Real {
 
     multi method nude() { $.numerator, $.denominator; }
 
-    multi method perl() { "Math::FatRat({ $!numerator.perl }, { $!denominator.perl })"; }
+    multi method perl() { "Math::FatRat.new({ $!numerator.perl }, { $!denominator.perl })"; }
 
     method Bridge() {
         $!denominator == 0 ?? Inf * $!numerator.sign

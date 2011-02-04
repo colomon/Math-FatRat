@@ -1,4 +1,5 @@
 use Math::FatRat;
+use Math::BigInt;
 use Test;
 
 plan *;
@@ -10,6 +11,16 @@ plan *;
     is ~$a.denominator, "1", "and denominator 1";
 }
 
+{
+    my $a = Math::FatRat.new(4/10);
+    isa_ok $a, Math::FatRat, ".new(Rat) creates a FatRat";
+    is ~$a.numerator, "2", "with numerator 2";
+    is ~$a.denominator, "5", "and denominator 5";
+    is ~$a.nude, <2 5>, ".nude works";
+    
+    my $b = $a.perl.eval;
+    is ~$b.nude, <2 5>, ".perl.eval works";
+}
 
 
 
