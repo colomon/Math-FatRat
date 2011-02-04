@@ -22,6 +22,36 @@ plan *;
     is ~$b.nude, <2 5>, ".perl.eval works";
 }
 
+{
+    is_approx Math::FatRat.new(17/15).Bridge, 17/15, "FatRat.Bridge has correct value (approximately)";
+    isa_ok Math::FatRat.new(17/15).Bridge, Num, "FatRat.Bridge has correct type";
+}
+
+{
+    is Math::FatRat.new(17/15).Bool, Bool::True, "FatRat.Bool has correct value";
+    isa_ok Math::FatRat.new(17/15).Bool, Bool, "FatRat.Bool has correct type";
+    is Math::FatRat.new(0/15).Bool, Bool::False, "FatRat.Bool has correct value";
+    isa_ok Math::FatRat.new(0/15).Bool, Bool, "FatRat.Bool has correct type";
+    
+}
+
+{
+    is_approx Math::FatRat.new(57/2).Num, 57/2, "FatRat.Num has correct value (approximately)";
+    isa_ok Math::FatRat.new(57/2).Num, Num, "FatRat.Num has correct type";
+}
+
+{
+    my $a = Math::FatRat.new(57/2);
+    my $b = $a.succ;
+    isa_ok $b, Math::FatRat, "FatRat.succ yields a FatRat";
+    is ~$b.nude, ~<59 2>, "and the correct value";
+    is ~$a.nude, ~<57 2>, "and the original is unchanged";
+
+    $a = $b.pred;
+    isa_ok $b, Math::FatRat, "FatRat.pred yields a FatRat";
+    is ~$a.nude, ~<57 2>, "and the correct value";
+    is ~$b.nude, ~<59 2>, "and the original is unchanged";
+}
 
 
 
