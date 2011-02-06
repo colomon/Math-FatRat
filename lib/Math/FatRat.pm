@@ -15,19 +15,9 @@ class Math::FatRat does Real {
 
     multi method new(Math::BigInt $numerator, Math::BigInt $denominator) {
         my $gcd = gcd($numerator, $denominator);
+        # need to deal with sign
         self.bless(*, :numerator($numerator div $gcd), :denominator($denominator div $gcd));
     }
-    
-    # multi method new(Int $numerator is copy, Int $denominator is copy) {
-    #     if $denominator < 0 {
-    #         $numerator = -$numerator;
-    #         $denominator = -$denominator;
-    #     }
-    #     my $gcd = pir::gcd__iii($numerator, $denominator);
-    #     $numerator = $numerator div $gcd;
-    #     $denominator = $denominator div $gcd;
-    #     self.bless(*, :numerator($numerator), :denominator($denominator));
-    # }
 
     multi method nude() { $.numerator, $.denominator; }
 
