@@ -64,6 +64,15 @@ class Math::FatRat does Real {
         Math::FatRat.new($a) FR+ Math::FatRat.new($b);
     }
 
+    multi sub infix:<FR->(Math::FatRat $a, Math::FatRat $b) is export(:DEFAULT) {
+        Math::FatRat.new($a.numerator * $b.denominator - $b.numerator * $a.denominator,
+                         $a.denominator * $b.denominator);
+    }
+
+    multi sub infix:<FR->($a, $b) is export(:DEFAULT) {
+        Math::FatRat.new($a) FR- Math::FatRat.new($b);
+    }
+
     multi sub infix:<FR*>(Math::FatRat $a, Math::FatRat $b) {
         Math::FatRat.new($a.numerator * $b.numerator, $a.denominator * $b.denominator);
     }
@@ -79,30 +88,14 @@ class Math::FatRat does Real {
     multi sub infix:<FR/>($a, $b) is export(:DEFAULT) {
         Math::FatRat.new($a) FR/ Math::FatRat.new($b);
     }
+    
+    multi sub infix:<FR**>(Math::FatRat $a, $b) is export(:DEFAULT) {
+        Math::FatRat.new($a.numerator ** $b, $a.denominator ** $b);
+    }
 }
 
 # multi sub prefix:<->(Math::FatRat $a) {
 #     Math::FatRat.new(-$a.numerator, $a.denominator);
-# }
-# 
-# multi sub infix:<->(Math::FatRat $a, Math::FatRat $b) {
-#     my $gcd = pir::gcd__iii($a.denominator, $b.denominator);
-#     ($a.numerator * ($b.denominator div $gcd) - $b.numerator * ($a.denominator div $gcd))
-#         / (($a.denominator div $gcd) * $b.denominator);
-# }
-# 
-# multi sub infix:<->(Math::FatRat $a, Int $b) {
-#     ($a.numerator - $b * $a.denominator) / $a.denominator;
-# }
-# 
-# multi sub infix:<->(Int $a, Math::FatRat $b) {
-#     ($a * $b.denominator - $b.numerator) / $b.denominator;
-# }
-# 
-# multi sub infix:<**>(Math::FatRat $a, Int $b) {
-#     my $num = $a.numerator ** $b;
-#     my $den = $a.denominator ** $b;
-#     $num ~~ Int && $den ~~ Int ?? $num / $den !! $a.Bridge ** $b;
 # }
 
 # vim: ft=perl6 sw=4 ts=4 expandtab
