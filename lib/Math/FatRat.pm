@@ -8,12 +8,22 @@ class Math::FatRat does Real {
         self.bless(*, :numerator(0L), :denominator(1L));
     }
 
+    multi method new(Int $r) {
+        self.bless(*, :numerator(Math::BigInt.new($r)), 
+                      :denominator(1L));
+    }
+
     multi method new(Rat $r) {
         self.bless(*, :numerator(Math::BigInt.new($r.numerator)), 
                       :denominator(Math::BigInt.new($r.denominator)));
     }
 
-    multi method new(Math::BigInt $numerator, Math::BigInt $denominator) {
+    multi method new(Math::FatRat $r) {
+        self.bless(*, :numerator($r.numerator), 
+                      :denominator($r.denominator));
+    }
+
+    multi method new(Math::BigInt $numerator, Math::BigInt $denominator = 1L) {
         my $gcd = gcd($numerator, $denominator);
         # need to deal with sign
         self.bless(*, :numerator($numerator div $gcd), :denominator($denominator div $gcd));
@@ -46,10 +56,14 @@ class Math::FatRat does Real {
     }
     
     multi sub infix:<FR+>(Math::FatRat $a, Math::FatRat $b) is export(:DEFAULT) {
-        my $gcd = gcd($a.denominator, $b.denominator);
-        Math::FatRat.new($a.numerator * ($b.denominator div $gcd) + $b.numerator * ($a.denominator div $gcd),
-                         ($a.denominator div $gcd) * $b.denominator);
+        Math::FatRat.new($a.numerator * $b.denominator + $b.numerator * $a.denominator,
+                         $a.denominator * $b.denominator);
     }
+
+    multi sub infix:<FR+>($a, $b) is export(:DEFAULT) {
+        Math::FatRat.new($a) FR+ Math::FatRat.new($b);
+    }
+
 }
 
 # multi sub prefix:<->(Math::FatRat $a) {

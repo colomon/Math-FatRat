@@ -23,6 +23,30 @@ plan *;
 }
 
 {
+    my $a = Math::FatRat.new(4);
+    isa_ok $a, Math::FatRat, ".new(Int) creates a FatRat";
+    is ~$a.numerator, "4", "with numerator 4";
+    is ~$a.denominator, "1", "and denominator 1";
+    is ~$a.nude, <4 1>, ".nude works";
+}
+
+{
+    my $a = Math::FatRat.new(4L);
+    isa_ok $a, Math::FatRat, ".new(BigInt) creates a FatRat";
+    is ~$a.numerator, "4", "with numerator 4";
+    is ~$a.denominator, "1", "and denominator 1";
+    is ~$a.nude, <4 1>, ".nude works";
+}
+
+{
+    my $a = Math::FatRat.new(Math::FatRat.new(4L));
+    isa_ok $a, Math::FatRat, ".new(FatRat) creates a FatRat";
+    is ~$a.numerator, "4", "with numerator 4";
+    is ~$a.denominator, "1", "and denominator 1";
+    is ~$a.nude, <4 1>, ".nude works";
+}
+
+{
     is_approx Math::FatRat.new(17/15).Bridge, 17/15, "FatRat.Bridge has correct value (approximately)";
     isa_ok Math::FatRat.new(17/15).Bridge, Num, "FatRat.Bridge has correct type";
 }
