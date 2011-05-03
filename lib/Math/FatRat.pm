@@ -64,24 +64,25 @@ class Math::FatRat does Real {
         Math::FatRat.new($a) FR+ Math::FatRat.new($b);
     }
 
+    multi sub infix:<FR*>(Math::FatRat $a, Math::FatRat $b) {
+        Math::FatRat.new($a.numerator * $b.numerator, $a.denominator * $b.denominator);
+    }
+
+    multi sub infix:<FR*>($a, $b) is export(:DEFAULT) {
+        Math::FatRat.new($a) FR* Math::FatRat.new($b);
+    }
+    
+    multi sub infix:<FR/>(Math::FatRat $a, Math::FatRat $b) {
+        Math::FatRat.new($a.numerator * $b.denominator, $a.denominator * $b.numerator);
+    }
+
+    multi sub infix:<FR/>($a, $b) is export(:DEFAULT) {
+        Math::FatRat.new($a) FR/ Math::FatRat.new($b);
+    }
 }
 
 # multi sub prefix:<->(Math::FatRat $a) {
 #     Math::FatRat.new(-$a.numerator, $a.denominator);
-# }
-# 
-# multi sub infix:<+>(Math::FatRat $a, Math::FatRat $b) {
-#     my $gcd = pir::gcd__iii($a.denominator, $b.denominator);
-#     ($a.numerator * ($b.denominator div $gcd) + $b.numerator * ($a.denominator div $gcd))
-#         / (($a.denominator div $gcd) * $b.denominator);
-# }
-# 
-# multi sub infix:<+>(Math::FatRat $a, Int $b) {
-#     ($a.numerator + $b * $a.denominator) / $a.denominator;
-# }
-# 
-# multi sub infix:<+>(Int $a, Math::FatRat $b) {
-#     ($a * $b.denominator + $b.numerator) / $b.denominator;
 # }
 # 
 # multi sub infix:<->(Math::FatRat $a, Math::FatRat $b) {
@@ -96,34 +97,6 @@ class Math::FatRat does Real {
 # 
 # multi sub infix:<->(Int $a, Math::FatRat $b) {
 #     ($a * $b.denominator - $b.numerator) / $b.denominator;
-# }
-# 
-# multi sub infix:<*>(Math::FatRat $a, Math::FatRat $b) {
-#     ($a.numerator * $b.numerator) / ($a.denominator * $b.denominator);
-# }
-# 
-# multi sub infix:<*>(Math::FatRat $a, Int $b) {
-#     ($a.numerator * $b) / $a.denominator;
-# }
-# 
-# multi sub infix:<*>(Int $a, Math::FatRat $b) {
-#     ($a * $b.numerator) / $b.denominator;
-# }
-# 
-# multi sub infix:</>(Math::FatRat $a, Math::FatRat $b) {
-#     ($a.numerator * $b.denominator) / ($a.denominator * $b.numerator);
-# }
-# 
-# multi sub infix:</>(Math::FatRat $a, Int $b) {
-#     $a.numerator / ($a.denominator * $b);
-# }
-# 
-# multi sub infix:</>(Int $a, Math::FatRat $b) {
-#     ($b.denominator * $a) / $b.numerator;
-# }
-# 
-# multi sub infix:</>(Int $a, Int $b) {
-#     Math::FatRat.new($a, $b);
 # }
 # 
 # multi sub infix:<**>(Math::FatRat $a, Int $b) {
